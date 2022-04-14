@@ -164,8 +164,8 @@ if (SEag < 0.1){
   SEag <- 7.0
 }
   
-#Slagm = Aggregate Geometric Mean Diameter [SWEEP document page 17]
-Slagm <- exp(1.343-2.235*Sandpct-1.226*Siltpct-0.0238*(Sandpct/Claypct)^3 
+#Slagm = Aggregate Geometric Mean Diameter [modified, see new SWEEP document page 17]
+Slagm <- exp(1.343-2.235*Sandpct-1.226*Siltpct-0.0238*(Sandpct/Claypct) 
              + 33.6*Organicpct+6.85*CaCO3pct)*(1+0.006*Depthmm)
 #adjustments for absolute range allowed in SWEEP document page 17
 if (Slagm < 0.03){
