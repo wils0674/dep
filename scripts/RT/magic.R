@@ -284,15 +284,31 @@ WEPS[86]<-paste(" ",(round((WEPPout$CnpyHt_ft[i]*0.3048),digits=2)),sep="") #bio
 WEPS[89]<-paste(" ",(round((WEPPout$CnpyHt_ft[i]*0.3048),digits=2)),sep="") #crop height on day i;  converted to m
 
 
-#***************need to find way to estimate Stem Area Index**********
-WEPS[93]<-paste(" ",0.0,"", (round(WEPPout$LAI[i], digits=2)),collapse="") #crop StemAI and LAI
+#***************estimate Stem Area Index**********
+if (CropCode ==S ){
+    stem_dia <- 0.006 #m #6.0mm
+    stem_pop<-(100000/4046.86)
+  } else if (CropCode == C){
+    stem_dia <- 0.01 #m #10.0mm
+    stem_pop<-(32000/4046.86)
+  }
+ #NEED TO ADD STATEMENT FOR OTHER CROP
+CSAI<-stem_dia*stem_pop*(WEPPout$CnpyHt_ft[i]*0.3048)
+WEPS[93]<-paste(" ",(round(CSAI, digits=2)),"", (round(WEPPout$LAI[i], digits=2)),collapse="") #crop StemAI and LAI
+
+#WEPS[93]<-paste(" ",0.0,"", (round(WEPPout$LAI[i], digits=2)),collapse="") #crop StemAI and LAI
 #   WEPS[120]<-paste(" ",(round(WEPPout$LAI[i], digits=2)),"", (round(WEPPout$LAI[i], digits=2)),collapse="") #crop StemAI and LAI
    
 #line 141 is flat biomass cover m2/m2, Need to convert residue t/ac to biomass cover (m/m)
 #Percent cover estimated from residue biomass after equtions provided in Gregory, 1982
 #Currently using a single cover coefficient (corn), need to find a way to update this by crop
 Residuelbac<-WEPPout$`Rsd_t-a`[i]*2000 #convert t/ac to lb/acre
-covercoef<-0.00038 #currently based on value for corn from Gregory 1982 (need to update for other crops)
+  if (CropCode ==S ){
+    covercoef<-0.0002
+  } else if (CropCode == C){
+    covercoef<-0.00038
+  }
+
 Cover<-(1-exp(-covercoef*Residuelbac))
 WEPS[114]<-Cover
 
